@@ -1,12 +1,32 @@
 package com.pominova.surfmemesapp.activity
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
 import com.pominova.surfmemesapp.R
+import com.pominova.surfmemesapp.model.AuthRequest
+import com.pominova.surfmemesapp.model.AuthResponse
+import com.pominova.surfmemesapp.service.NetworkService
+import com.pominova.surfmemesapp.util.AppConstant.APP_REFERENCES
+import com.pominova.surfmemesapp.util.AppConstant.EMPTY_FIELD_ERROR
+import com.pominova.surfmemesapp.util.AppConstant.FIRST_NAME_FIELD
+import com.pominova.surfmemesapp.util.AppConstant.ID_FIELD
+import com.pominova.surfmemesapp.util.AppConstant.LAST_NAME_FIELD
+import com.pominova.surfmemesapp.util.AppConstant.TOKEN_FIELD
+import com.pominova.surfmemesapp.util.AppConstant.USERNAME_FIELD
+import com.pominova.surfmemesapp.util.AppConstant.USER_DESCRIPTION_FIELD
+import com.pominova.surfmemesapp.util.AppConstant.WRONG_AUTH_DATA_ERROR
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import studio.carbonylgroup.textfieldboxes.TextFieldBoxes
 
-const val EMPTY_FIELD_ERROR = "Поле не может быть пустым"
 
 class AuthActivity : AppCompatActivity() {
 
@@ -14,13 +34,19 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.auth_activity)
 
-        val signInBtn = findViewById<Button>(R.id.sign_in_btn)
-        val loginTextField = findViewById<TextFieldBoxes>(R.id.login_tfb)
-        val passwordTextField = findViewById<TextFieldBoxes>(R.id.password_tfb)
+        val signInBtn: Button = findViewById(R.id.sign_in_btn)
+        val loginTextField: TextFieldBoxes = findViewById(R.id.login_tfb)
+        val passwordTextField: TextFieldBoxes = findViewById(R.id.password_tfb)
+        var login: String
+        var password: String
 
         signInBtn.setOnClickListener { v -> run {
-            validateLogin(loginTextField.text, loginTextField!!)
-            validatePassword(passwordTextField.text, passwordTextField!!)
+            login = loginTextField.text
+            password = passwordTextField.text
+            validateLogin(login, loginTextField)
+            validatePassword(password, passwordTextField)
+
+            loginUser(this, AuthRequest(login, password))
         } }
     }
 
@@ -33,6 +59,46 @@ class AuthActivity : AppCompatActivity() {
     private fun validatePassword(password: String, tfb: TextFieldBoxes) {
         if (password.isEmpty()) {
             tfb.setError(EMPTY_FIELD_ERROR)
+        }
+    }
+
+    private fun loginUser(activity: Activity, authRequest: AuthRequest) {
+        val authLayout: LinearLayout = findViewById(R.id.auth_layout)
+        NetworkService.getInstance()
+            .jsonApi
+            .login(authRequest)
+            .enqueue(object : Callback<AuthResponse> {
+
+                override fun onResponse(call: Call<AuthResponse>, response: Response<AuthResponse>) {
+                    saveResponseToSHaredPref(activity, response.body()!!)
+
+                    val intent = Intent(activity, MainActivity::class.java)
+                    startActivity(intent)
+                }
+
+                override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
+                    val wrongCredsSB = Snackbar.make(
+                        authLayout,
+                        WRONG_AUTH_DATA_ERROR,
+                        Snackbar.LENGTH_LONG
+                    )
+                    val sbView = wrongCredsSB.view
+                    sbView.setBackgroundColor(ContextCompat.getColor(activity.applicationContext, R.color.colorError));
+                    wrongCredsSB.show()
+                }
+            })
+    }
+
+    private fun saveResponseToSHaredPref(activity: Activity, response: AuthResponse) {
+        val sharedPref = activity.getSharedPreferences(APP_REFERENCES, Context.MODE_PRIVATE) ?: return
+        with (sharedPref.edit()) {
+            putString(TOKEN_FIELD, response.accessToken)
+            putInt(ID_FIELD, response.userInfo!!.id)
+            putString(USERNAME_FIELD, response.userInfo!!.username)
+            putString(FIRST_NAME_FIELD, response.userInfo!!.firstName)
+            putString(LAST_NAME_FIELD, response.userInfo!!.lastName)
+            putString(USER_DESCRIPTION_FIELD, response.userInfo!!.userDescription)
+            commit()
         }
     }
 }

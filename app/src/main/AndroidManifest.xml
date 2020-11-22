@@ -20,5 +20,6 @@
         </activity>
 
         <activity android:name="com.pominova.surfmemesapp.activity.AuthActivity" />
+        <activity android:name="com.pominova.surfmemesapp.activity.MainActivity" />
     </application>
 </manifest>

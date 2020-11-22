@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/auth_layout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -31,7 +32,7 @@
         android:id="@+id/sign_in_btn"
         android:layout_width="328dp"
         android:layout_height="48dp"
-        android:text="@string/signInBtn"
+        android:text="@string/sign_in_btn"
         android:theme="@style/ButtonTheme"
         />
 

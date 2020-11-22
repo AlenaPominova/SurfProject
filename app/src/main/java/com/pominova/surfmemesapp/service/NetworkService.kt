@@ -1,21 +1,22 @@
 package com.pominova.surfmemesapp.service
 
+import com.pominova.surfmemesapp.util.AppConstant.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class NetworkService private constructor() {
-    private val BASE_URL =
-        "https://virtserver.swaggerhub.com/AndroidSchool/SurfAndroidSchool/1.0.0"
-    private var networkServiceInstance: NetworkService? = null
-    private val retrofit: Retrofit
+    companion object {
+        private var instance: NetworkService? = null
 
-    var instance: NetworkService? = null
-        get() {
-            if (networkServiceInstance == null) {
-                networkServiceInstance = NetworkService()
+        fun getInstance(): NetworkService {
+            if (instance == null) {
+                instance = NetworkService()
             }
-            return networkServiceInstance
+            return instance!!
         }
+    }
+
+    private val retrofit: Retrofit
 
     val jsonApi: JSONPlaceHolderApi
         get() = retrofit.create(JSONPlaceHolderApi::class.java)
