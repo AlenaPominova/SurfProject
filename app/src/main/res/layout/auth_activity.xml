@@ -1,17 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal|center_vertical"
     android:theme="@style/AppTheme">
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+    <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+        android:id="@+id/login_tfb"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/auth_text">
-    </TextView>
+        app:errorColor="@color/colorError"
+        app:hint="@string/login_hint"
+        app:primaryColor="@color/colorActive"
+        app:singleLine="true" />
+
+    <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+        android:id="@+id/password_tfb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+        app:hint="@string/password_hint"
+        app:singleLine="true"
+        app:primaryColor="@color/colorActive"
+        app:errorColor="@color/colorError" />
+
+    <Button
+        android:id="@+id/sign_in_btn"
+        android:layout_width="328dp"
+        android:layout_height="48dp"
+        android:text="@string/signInBtn"
+        android:theme="@style/ButtonTheme"
+        />
 
 </LinearLayout>
