@@ -6,8 +6,8 @@ import com.google.gson.annotations.SerializedName
 class AuthResponse {
     @SerializedName("accessToken")
     @Expose
-    private val accessToken: String? = null
+    var accessToken: String? = null
     @SerializedName("userInfo")
     @Expose
-    private val userInfo: UserInfo? = null
+    var userInfo: UserInfo? = null
 }
