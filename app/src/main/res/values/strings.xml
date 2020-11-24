@@ -4,7 +4,8 @@
     <string name="auth_text">This is Activity Two</string>
     <string name="login_hint">Логин</string>
     <string name="password_hint">Пароль</string>
-    <string name="sign_in_btn">Войти</string>
+    <string name="password_helper">Пароль</string>
+    <string name="enter_text">Войти</string>
 
     <string name="token"/>
     <string name="id"/>

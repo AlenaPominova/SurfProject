@@ -22,6 +22,7 @@ import com.pominova.surfmemesapp.util.AppConstant.TOKEN_FIELD
 import com.pominova.surfmemesapp.util.AppConstant.USERNAME_FIELD
 import com.pominova.surfmemesapp.util.AppConstant.USER_DESCRIPTION_FIELD
 import com.pominova.surfmemesapp.util.AppConstant.WRONG_AUTH_DATA_ERROR
+import kotlinx.android.synthetic.main.auth_activity.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,27 +40,35 @@ class AuthActivity : AppCompatActivity() {
         val passwordTextField: TextFieldBoxes = findViewById(R.id.password_tfb)
         var login: String
         var password: String
+        var isLoginCorrect = true
+        var isPasswordCorrect = true
 
         signInBtn.setOnClickListener { v -> run {
-            login = loginTextField.text
-            password = passwordTextField.text
-            validateLogin(login, loginTextField)
-            validatePassword(password, passwordTextField)
+            login = loginTextField.extended_edit_text_login.text.toString()
+            password = passwordTextField.extended_edit_text_password.text.toString()
+            isLoginCorrect = validateLogin(login, loginTextField)
+            isPasswordCorrect = validatePassword(password, passwordTextField)
+            if (isLoginCorrect && isPasswordCorrect) {
+                loginUser(this, AuthRequest(login, password))
+            }
 
-            loginUser(this, AuthRequest(login, password))
         } }
     }
 
-    private fun validateLogin(login: String, tfb: TextFieldBoxes) {
+    private fun validateLogin(login: String, tfb: TextFieldBoxes): Boolean {
         if (login.isEmpty()) {
-            tfb.setError(EMPTY_FIELD_ERROR)
+            tfb.setError(EMPTY_FIELD_ERROR, true)
+            return false
         }
+        return true
     }
 
-    private fun validatePassword(password: String, tfb: TextFieldBoxes) {
+    private fun validatePassword(password: String, tfb: TextFieldBoxes): Boolean {
         if (password.isEmpty()) {
-            tfb.setError(EMPTY_FIELD_ERROR)
+            tfb.setError(EMPTY_FIELD_ERROR, true)
+            return false
         }
+        return true
     }
 
     private fun loginUser(activity: Activity, authRequest: AuthRequest) {
