@@ -1,39 +1,70 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/auth_layout"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal|center_vertical"
-    android:theme="@style/AppTheme">
+    android:background="@color/colorPrimaryDark"
+    android:orientation="vertical"
+    android:paddingTop="80dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="24dp"
+    tools:context=".activity.AuthActivity">
 
-    <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
-        android:id="@+id/login_tfb"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:errorColor="@color/colorError"
-        app:hint="@string/login_hint"
-        app:primaryColor="@color/colorActive"
-        app:singleLine="true" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+            android:id="@+id/login_tfb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            app:primaryColor="@color/colorActive"
+            app:secondaryColor="@color/colorSecondary"
+            app:panelBackgroundColor="@color/colorPanel"
+            app:labelText="@string/login_label"
+            >
 
-    <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
-        android:id="@+id/password_tfb"
+            <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+                android:id="@+id/login_et"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorText"
+                />
+
+        </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+
+        <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+            android:id="@+id/password_tfb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:primaryColor="@color/colorActive"
+            app:secondaryColor="@color/colorSecondary"
+            app:helperTextColor="@color/colorText"
+            app:panelBackgroundColor="@color/colorPanel"
+            app:endIcon="@drawable/ic_show"
+            app:labelText="@string/password_label"
+            app:helperText="@string/password_helper"
+            >
+
+            <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+                android:id="@+id/password_et"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColor="@color/colorText"
+                />
+
+        </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+    </LinearLayout>
+
+    <include
+        android:id="@+id/enter_button"
+        layout="@layout/progress_btn_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:passwordToggleEnabled="true"
-        app:hint="@string/password_hint"
-        app:singleLine="true"
-        app:primaryColor="@color/colorActive"
-        app:errorColor="@color/colorError" />
-
-    <Button
-        android:id="@+id/sign_in_btn"
-        android:layout_width="328dp"
-        android:layout_height="48dp"
-        android:text="@string/sign_in_btn"
-        android:theme="@style/ButtonTheme"
-        />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
