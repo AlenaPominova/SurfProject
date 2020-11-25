@@ -12,6 +12,7 @@
         android:theme="@style/AppTheme" >
 
         <activity android:name="com.pominova.surfmemesapp.activity.StartActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="Title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +20,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.pominova.surfmemesapp.activity.AuthActivity" />
+        <activity android:name="com.pominova.surfmemesapp.activity.AuthActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name="com.pominova.surfmemesapp.activity.MainActivity" />
     </application>
 </manifest>

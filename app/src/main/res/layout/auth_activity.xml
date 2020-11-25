@@ -22,17 +22,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="16dp"
-            app:primaryColor="#1EF0D7"
-            app:secondaryColor="#8AFFFFFF"
-            app:panelBackgroundColor="#0DFFFFFF"
-            app:labelText="@string/login_hint"
+            app:primaryColor="@color/colorActive"
+            app:secondaryColor="@color/colorSecondary"
+            app:panelBackgroundColor="@color/colorPanel"
+            app:labelText="@string/login_label"
             >
 
             <studio.carbonylgroup.textfieldboxes.ExtendedEditText
-                android:id="@+id/extended_edit_text_login"
+                android:id="@+id/login_et"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FFF"
+                android:textColor="@color/colorText"
                 />
 
         </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
@@ -41,31 +41,30 @@
             android:id="@+id/password_tfb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:primaryColor="#1EF0D7"
-            app:secondaryColor="#8AFFFFFF"
-            app:helperTextColor="#FFF"
-            app:panelBackgroundColor="#0DFFFFFF"
-            app:maxCharacters="10"
-            app:labelText="@string/password_hint"
+            app:primaryColor="@color/colorActive"
+            app:secondaryColor="@color/colorSecondary"
+            app:helperTextColor="@color/colorText"
+            app:panelBackgroundColor="@color/colorPanel"
+            app:endIcon="@drawable/ic_show"
+            app:labelText="@string/password_label"
             app:helperText="@string/password_helper"
             >
 
             <studio.carbonylgroup.textfieldboxes.ExtendedEditText
-                android:id="@+id/extended_edit_text_password"
+                android:id="@+id/password_et"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FFF"
+                android:inputType="textPassword"
+                android:textColor="@color/colorText"
                 />
 
         </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
     </LinearLayout>
-    <Button
-        android:id="@+id/sign_in_btn"
+
+    <include
+        android:id="@+id/enter_button"
+        layout="@layout/progress_btn_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:height="48dp"
-        android:background="#1EF0D7"
-        android:text="@string/enter_text"
-        />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

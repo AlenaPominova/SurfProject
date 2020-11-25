@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.pominova.surfmemesapp.R
+import com.pominova.surfmemesapp.util.AppConstant.SPLASH_ACTIVITY_DELAY
 
 class StartActivity : AppCompatActivity() {
 
@@ -14,7 +15,7 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.start_activity)
 
-        handler.postDelayed(openAuthActivity, 300);
+        handler.postDelayed(openAuthActivity, SPLASH_ACTIVITY_DELAY);
     }
 
     private val openAuthActivity = Runnable {
