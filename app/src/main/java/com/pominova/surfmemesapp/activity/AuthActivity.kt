@@ -37,23 +37,26 @@ import kotlin.concurrent.timerTask
 
 
 class AuthActivity : AppCompatActivity() {
-    private val loginTextField: TextFieldBoxes = findViewById(R.id.login_tfb)
-    private val passwordTextField: TextFieldBoxes = findViewById(R.id.password_tfb)
-    private val loginEditText: ExtendedEditText = findViewById(R.id.login_et)
-    private val passwordEditText: ExtendedEditText = findViewById(R.id.password_et)
-    private val signInBtn: View = findViewById(R.id.enter_button)
-    private val progressButtonHelper = ProgressButtonUtil(signInBtn, ENTER_MESSAGE)
-
-    private var login: String = ""
-    private var password: String = ""
-    private var isLoginValid: Boolean = true
-    private var isPasswordValid: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.auth_activity)
 
+        val loginTextField: TextFieldBoxes = findViewById(R.id.login_tfb)
+        val passwordTextField: TextFieldBoxes = findViewById(R.id.password_tfb)
+
+        val loginEditText: ExtendedEditText = findViewById(R.id.login_et)
+        val passwordEditText: ExtendedEditText = findViewById(R.id.password_et)
+
         setChangeListeners(loginTextField, passwordTextField, passwordEditText)
+
+        val signInBtn: View = findViewById(R.id.enter_button)
+        val progressButtonHelper = ProgressButtonUtil(signInBtn, ENTER_MESSAGE)
+
+        var login: String
+        var password: String
+        var isLoginValid = true
+        var isPasswordValid = true
 
         signInBtn.setOnClickListener { view -> run {
             login = loginEditText.text.toString()
