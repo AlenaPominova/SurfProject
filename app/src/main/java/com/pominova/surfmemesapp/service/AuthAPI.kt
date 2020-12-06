@@ -8,7 +8,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface JSONPlaceHolderApi {
+interface AuthAPI {
 
     @POST(AUTH_URL)
     fun login(@Body authBody: AuthRequest): Call<AuthResponse>
