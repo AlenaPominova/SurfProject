@@ -37,26 +37,23 @@ import kotlin.concurrent.timerTask
 
 
 class AuthActivity : AppCompatActivity() {
+    private val loginTextField: TextFieldBoxes = findViewById(R.id.login_tfb)
+    private val passwordTextField: TextFieldBoxes = findViewById(R.id.password_tfb)
+    private val loginEditText: ExtendedEditText = findViewById(R.id.login_et)
+    private val passwordEditText: ExtendedEditText = findViewById(R.id.password_et)
+    private val signInBtn: View = findViewById(R.id.enter_button)
+    private val progressButtonHelper = ProgressButtonUtil(signInBtn, ENTER_MESSAGE)
+
+    private var login: String = ""
+    private var password: String = ""
+    private var isLoginValid: Boolean = true
+    private var isPasswordValid: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.auth_activity)
 
-        val loginTextField: TextFieldBoxes = findViewById(R.id.login_tfb)
-        val passwordTextField: TextFieldBoxes = findViewById(R.id.password_tfb)
-
-        val loginEditText: ExtendedEditText = findViewById(R.id.login_et)
-        val passwordEditText: ExtendedEditText = findViewById(R.id.password_et)
-
         setChangeListeners(loginTextField, passwordTextField, passwordEditText)
-
-        val signInBtn: View = findViewById(R.id.enter_button)
-        val progressButtonHelper = ProgressButtonUtil(signInBtn, ENTER_MESSAGE)
-
-        var login: String
-        var password: String
-        var isLoginValid: Boolean
-        var isPasswordValid: Boolean
 
         signInBtn.setOnClickListener { view -> run {
             login = loginEditText.text.toString()
@@ -73,13 +70,17 @@ class AuthActivity : AppCompatActivity() {
 
     private fun setChangeListeners(loginTextField: TextFieldBoxes, passwordTextField: TextFieldBoxes,
                                    passwordEditText: ExtendedEditText) {
-        loginTextField.setSimpleTextChangeWatcher { newText: String, isError: Boolean -> onTextChanged(loginTextField, newText, isError) }
+        loginTextField.setSimpleTextChangeWatcher { newText: String, isError: Boolean ->
+            onTextChanged(loginTextField, newText, isError) }
 
-        passwordTextField.setSimpleTextChangeWatcher { newText: String, isError: Boolean -> onTextChanged(passwordTextField, newText, isError) }
-        passwordEditText.setOnFocusChangeListener { _, focused -> onFocusChanged(passwordTextField, focused) }
+        passwordTextField.setSimpleTextChangeWatcher { newText: String, isError: Boolean ->
+            onTextChanged(passwordTextField, newText, isError) }
+        passwordEditText.setOnFocusChangeListener { _, focused ->
+            onFocusChanged(passwordTextField, focused) }
 
-        passwordTextField.endIconImageButton.setOnClickListener { onShowHidePasswordClick(passwordTextField, passwordEditText) }
-
+        passwordTextField.endIconImageButton.setOnClickListener {
+            onShowHidePasswordClick(passwordTextField, passwordEditText)
+        }
     }
 
     private fun onTextChanged(textFieldBoxes: TextFieldBoxes, theNewText: String, isError: Boolean) {
@@ -103,7 +104,8 @@ class AuthActivity : AppCompatActivity() {
             extendedEditText.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
         } else {
             textFieldBoxes.setEndIcon(R.drawable.ic_show)
-            extendedEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            extendedEditText.inputType =
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         }
     }
 
@@ -115,17 +117,20 @@ class AuthActivity : AppCompatActivity() {
         return true
     }
 
-    private fun loginUser(activity: Activity, progressButtonUtil: ProgressButtonUtil, authRequest: AuthRequest) {
+    private fun loginUser(activity: Activity,
+                          progressButtonUtil: ProgressButtonUtil,
+                          authRequest: AuthRequest) {
         val authLayout: LinearLayout = findViewById(R.id.auth_layout)
         progressButtonUtil.activateButton()
 
         Timer().schedule(timerTask {
             NetworkService.getInstance()
-                .jsonApi
+                .authAPI
                 .login(authRequest)
                 .enqueue(object : Callback<AuthResponse> {
 
-                    override fun onResponse(call: Call<AuthResponse>, response: Response<AuthResponse>) {
+                    override fun onResponse(call: Call<AuthResponse>,
+                                            response: Response<AuthResponse>) {
                         saveResponseToSharedPref(activity, response.body()!!)
 
                         val intent = Intent(activity, MainActivity::class.java)
@@ -149,7 +154,8 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun saveResponseToSharedPref(activity: Activity, response: AuthResponse) {
-        val sharedPref = activity.getSharedPreferences(APP_REFERENCES, Context.MODE_PRIVATE) ?: return
+        val sharedPref =
+            activity.getSharedPreferences(APP_REFERENCES, Context.MODE_PRIVATE) ?: return
         with (sharedPref.edit()) {
             putString(TOKEN_FIELD, response.accessToken)
             putInt(ID_FIELD, response.userInfo!!.id)
