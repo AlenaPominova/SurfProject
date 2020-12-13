@@ -18,8 +18,8 @@ class NetworkService private constructor() {
 
     private val retrofit: Retrofit
 
-    val authAPI: AuthAPI
-        get() = retrofit.create(AuthAPI::class.java)
+    val networkAPI: NetworkAPI
+        get() = retrofit.create(NetworkAPI::class.java)
 
     init {
         retrofit = Retrofit.Builder()

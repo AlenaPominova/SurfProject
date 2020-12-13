@@ -14,7 +14,7 @@
         app:layoutManager="StaggeredGridLayoutManager"></androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout
-        android:id="@+id/linear_layout_2"
+        android:id="@+id/load_memes_linear_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -31,7 +31,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text=""
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/colorText"/>
 
         <TextView
             android:id="@+id/retry_tv"
@@ -39,14 +40,16 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text=""
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/colorText"/>
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/progress_bar_2"
+        android:id="@+id/load_memes_progress_bar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminateTint="@color/colorActive"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

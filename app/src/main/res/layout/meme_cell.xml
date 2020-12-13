@@ -27,7 +27,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:maxLines="1"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:textColor="@color/colorText" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linear_layout"
@@ -39,7 +40,7 @@
             android:layout_marginBottom="14dp">
 
             <ImageView
-                android:id="@+id/image_view"
+                android:id="@+id/like_image_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_like_not_selected"
@@ -47,13 +48,13 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
-                android:id="@+id/image_view_2"
+                android:id="@+id/share_image_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:src="@drawable/ic_share"
-                app:layout_constraintStart_toEndOf="@+id/image_view"
-                app:layout_constraintTop_toTopOf="@+id/image_view" />
+                app:layout_constraintStart_toEndOf="@+id/like_image_view"
+                app:layout_constraintTop_toTopOf="@+id/like_image_view" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
