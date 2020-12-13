@@ -7,7 +7,7 @@
     tools:context=".fragment.AddMemFragment">
 
     <TextView
-        android:id="@+id/text_add"
+        android:id="@+id/add_meme_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

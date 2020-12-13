@@ -7,7 +7,7 @@
     tools:context=".fragment.ProfileFragment">
 
     <TextView
-        android:id="@+id/text_profile"
+        android:id="@+id/profile_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -20,4 +20,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:gravity="center_horizontal" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
