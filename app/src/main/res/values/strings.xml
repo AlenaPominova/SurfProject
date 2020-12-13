@@ -5,4 +5,10 @@
     <string name="password_label">Пароль</string>
     <string name="password_helper"> </string>
     <string name="enter_text">Войти</string>
+
+    <string name="meme_feed">Meme Feed</string>
+    <string name="add">Add</string>
+    <string name="profile">Profile</string>
+    <string name="Search">Поиск</string>
+    <string name="popularMemes">Популярные мемы</string>
 </resources>
