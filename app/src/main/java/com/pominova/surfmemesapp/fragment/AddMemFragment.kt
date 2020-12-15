@@ -13,13 +13,15 @@ import com.zharkovsky.memes.viewModels.AddViewModel
 
 class AddMemFragment : Fragment() {
     private lateinit var addViewModel: AddViewModel
+    private lateinit var textView: TextView
+    private lateinit var root: View
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         addViewModel = ViewModelProvider(this).get(AddViewModel::class.java)
-        val root = inflater.inflate(R.layout.add_meme_fragment, container, false)
-        val textView: TextView = root.findViewById(R.id.add_meme_tv)
+        root = inflater.inflate(R.layout.add_meme_fragment, container, false)
+        textView = root.findViewById(R.id.add_meme_tv)
         addViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })

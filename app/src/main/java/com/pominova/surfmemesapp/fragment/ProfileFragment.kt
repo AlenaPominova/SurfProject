@@ -13,13 +13,15 @@ import com.zharkovsky.memes.viewModels.ProfileViewModel
 
 class ProfileFragment : Fragment() {
     private lateinit var profileViewModel: ProfileViewModel
+    private lateinit var textView: TextView
+    private lateinit var root: View
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         profileViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
-        val root = inflater.inflate(R.layout.profile_fragment, container, false)
-        val textView: TextView = root.findViewById(R.id.profile_tv)
+        root = inflater.inflate(R.layout.profile_fragment, container, false)
+        textView = root.findViewById(R.id.profile_tv)
         profileViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
