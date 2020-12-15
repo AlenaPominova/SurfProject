@@ -11,4 +11,7 @@
     <string name="profile">Profile</string>
     <string name="Search">Поиск</string>
     <string name="popularMemes">Популярные мемы</string>
+
+    <string name="load_memes_error_message">Не удалось загрузить ленту</string>
+    <string name="try_again_message">Обновите экран или попробуйте позже</string>
 </resources>

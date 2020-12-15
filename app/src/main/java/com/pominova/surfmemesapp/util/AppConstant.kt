@@ -7,6 +7,7 @@ object AppConstant {
     const val BASE_URL =
         "https://r2.mocker.surfstudio.ru"
     const val AUTH_URL = "/android_vsu/auth/login"
+    const val MEMES_URL = "/android_vsu/memes"
 
     const val WRONG_AUTH_DATA_ERROR =
         "Во время запроса произошла ошибка, возможно вы неверно ввели логин/пароль"

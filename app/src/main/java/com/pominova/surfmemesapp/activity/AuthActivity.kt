@@ -128,7 +128,7 @@ class AuthActivity : AppCompatActivity() {
 
         Timer().schedule(timerTask {
             NetworkService.getInstance()
-                .authAPI
+                .networkAPI
                 .login(authRequest)
                 .enqueue(object : Callback<AuthResponse> {
 
