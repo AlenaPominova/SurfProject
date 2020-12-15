@@ -14,38 +14,41 @@ import com.pominova.surfmemesapp.R
 import com.pominova.surfmemesapp.model.Meme
 import com.pominova.surfmemesapp.service.MemeAdapter
 import com.pominova.surfmemesapp.service.NetworkService
-import com.pominova.surfmemesapp.util.AppConstant
+import com.pominova.surfmemesapp.util.AppConstant.PROGRESS_BUTTON_DELAY
 import com.zharkovsky.memes.viewModels.DashboardViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import kotlin.concurrent.timerTask
+import kotlin.concurrent.schedule
 
 class MemeFeedFragment : Fragment() {
+    private lateinit var rootView: View
     private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var layoutManager: StaggeredGridLayoutManager
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         dashboardViewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
 
-        val root = inflater.inflate(R.layout.meme_feed_fragment, container, false)
-        val recyclerView = root.findViewById<RecyclerView>(R.id.recycler_list)
+        rootView = inflater.inflate(R.layout.meme_feed_fragment, container, false)
+        recyclerView = rootView.findViewById(R.id.recycler_list)
         recyclerView.setHasFixedSize(true)
-        val layoutManager =
+        layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.layoutManager = layoutManager
 
-        loadMemes(recyclerView, root)
-        return root
+        loadMemes()
+        return rootView
     }
 
-    private fun loadMemes(recyclerView: RecyclerView, root: View) {
-        val progressBar: ProgressBar = root.findViewById(R.id.load_memes_progress_bar)
+    private fun loadMemes() {
+        val progressBar: ProgressBar = rootView.findViewById(R.id.load_memes_progress_bar)
         progressBar.visibility = View.VISIBLE
 
-        Timer().schedule(timerTask {
+        Timer().schedule(PROGRESS_BUTTON_DELAY) {
             NetworkService.getInstance()
                 .networkAPI
                 .memes()
@@ -56,8 +59,8 @@ class MemeFeedFragment : Fragment() {
                     ) {
                         println(response.code())
                         val errorLoadMemesTextView =
-                            root.findViewById<TextView>(R.id.error_load_memes_tv)
-                        val retryTextView = root.findViewById<TextView>(R.id.retry_tv)
+                            rootView.findViewById<TextView>(R.id.error_load_memes_tv)
+                        val retryTextView = rootView.findViewById<TextView>(R.id.retry_tv)
                         if (response.code() != 200) {
                             errorLoadMemesTextView.text = getText(R.string.load_memes_error_message)
                             retryTextView.text = getText(R.string.try_again_message)
@@ -73,7 +76,6 @@ class MemeFeedFragment : Fragment() {
 
                     override fun onFailure(call: Call<List<Meme>>, t: Throwable) {}
                 })
-
-        }, AppConstant.PROGRESS_BUTTON_DELAY)
+        }
     }
 }
