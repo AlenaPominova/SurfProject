@@ -14,18 +14,13 @@ import com.pominova.surfmemesapp.model.AuthRequest
 import com.pominova.surfmemesapp.model.AuthResponse
 import com.pominova.surfmemesapp.service.NetworkService
 import com.pominova.surfmemesapp.util.AppConstant.APP_REFERENCES
-import com.pominova.surfmemesapp.util.AppConstant.EMPTY_FIELD_ERROR
-import com.pominova.surfmemesapp.util.AppConstant.EMPTY_HELPER_MESSAGE
-import com.pominova.surfmemesapp.util.AppConstant.ENTER_MESSAGE
 import com.pominova.surfmemesapp.util.AppConstant.FIRST_NAME_FIELD
 import com.pominova.surfmemesapp.util.AppConstant.ID_FIELD
 import com.pominova.surfmemesapp.util.AppConstant.LAST_NAME_FIELD
-import com.pominova.surfmemesapp.util.AppConstant.PASSWORD_LENGTH_HELPER_MESSAGE
 import com.pominova.surfmemesapp.util.AppConstant.PROGRESS_BUTTON_DELAY
 import com.pominova.surfmemesapp.util.AppConstant.TOKEN_FIELD
 import com.pominova.surfmemesapp.util.AppConstant.USERNAME_FIELD
 import com.pominova.surfmemesapp.util.AppConstant.USER_DESCRIPTION_FIELD
-import com.pominova.surfmemesapp.util.AppConstant.WRONG_AUTH_DATA_ERROR
 import com.pominova.surfmemesapp.util.ProgressButtonUtil
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,42 +28,53 @@ import retrofit2.Response
 import studio.carbonylgroup.textfieldboxes.ExtendedEditText
 import studio.carbonylgroup.textfieldboxes.TextFieldBoxes
 import java.util.*
-import kotlin.concurrent.timerTask
+import kotlin.concurrent.schedule
 
 
 class AuthActivity : AppCompatActivity() {
+    private lateinit var loginTextField: TextFieldBoxes
+    private lateinit var passwordTextField: TextFieldBoxes
+    private lateinit var loginEditText: ExtendedEditText
+    private lateinit var passwordEditText: ExtendedEditText
+    private lateinit var progressButtonHelper: ProgressButtonUtil
+    private lateinit var signInBtn: View
+    private lateinit var login: String
+    private lateinit var password: String
+    private var isLoginValid = true
+    private var isPasswordValid = true
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.auth_activity)
 
-        val loginTextField: TextFieldBoxes = findViewById(R.id.login_tfb)
-        val passwordTextField: TextFieldBoxes = findViewById(R.id.password_tfb)
+        loginTextField = findViewById(R.id.login_tfb)
+        passwordTextField = findViewById(R.id.password_tfb)
 
-        val loginEditText: ExtendedEditText = findViewById(R.id.login_et)
-        val passwordEditText: ExtendedEditText = findViewById(R.id.password_et)
+        loginEditText = findViewById(R.id.login_et)
+        passwordEditText = findViewById(R.id.password_et)
 
         setChangeListeners(loginTextField, passwordTextField, passwordEditText)
 
-        val signInBtn: View = findViewById(R.id.enter_button)
-        val progressButtonHelper = ProgressButtonUtil(signInBtn, ENTER_MESSAGE)
+        signInBtn = findViewById(R.id.enter_button)
+        progressButtonHelper = ProgressButtonUtil(signInBtn, getText(R.string.enter_btn_text).toString())
 
-        var login: String
-        var password: String
-        var isLoginValid = true
-        var isPasswordValid = true
+        isLoginValid = true
+        isPasswordValid = true
 
-        signInBtn.setOnClickListener { view -> run {
-            login = loginEditText.text.toString()
-            password = passwordEditText.text.toString()
-            isLoginValid = validateInput(login, loginTextField)
-            isPasswordValid = validateInput(password, passwordTextField)
+        signInBtn.setOnClickListener {
+            run {
+                login = loginEditText.text.toString()
+                password = passwordEditText.text.toString()
+                isLoginValid = validateInput(login, loginTextField)
+                isPasswordValid = validateInput(password, passwordTextField)
 
-            if (isLoginValid && isPasswordValid) {
-                loginUser(this, progressButtonHelper, AuthRequest(login, password))
+                if (isLoginValid && isPasswordValid) {
+                    loginUser(this, AuthRequest(login, password))
+                }
+
             }
-
-        } }
+        }
     }
 
     private fun setChangeListeners(loginTextField: TextFieldBoxes, passwordTextField: TextFieldBoxes,
@@ -94,9 +100,9 @@ class AuthActivity : AppCompatActivity() {
 
     private fun onFocusChanged(textBox: TextFieldBoxes, focused: Boolean) {
         if (focused) {
-            textBox.helperText = PASSWORD_LENGTH_HELPER_MESSAGE
+            textBox.helperText = getText(R.string.password_length_hint).toString()
         } else {
-            textBox.helperText = EMPTY_HELPER_MESSAGE
+            textBox.helperText = getText(R.string.empty_helper_message).toString()
         }
     }
 
@@ -114,19 +120,18 @@ class AuthActivity : AppCompatActivity() {
 
     private fun validateInput(input: String, tfb: TextFieldBoxes): Boolean {
         if (input.isEmpty()) {
-            tfb.setError(EMPTY_FIELD_ERROR, true)
+            tfb.setError(getText(R.string.empty_filed_error).toString(), true)
             return false
         }
         return true
     }
 
     private fun loginUser(activity: Activity,
-                          progressButtonUtil: ProgressButtonUtil,
                           authRequest: AuthRequest) {
         val authLayout: LinearLayout = findViewById(R.id.auth_layout)
-        progressButtonUtil.activateButton()
+        progressButtonHelper.activateButton()
 
-        Timer().schedule(timerTask {
+        Timer().schedule(PROGRESS_BUTTON_DELAY) {
             NetworkService.getInstance()
                 .networkAPI
                 .login(authRequest)
@@ -143,7 +148,7 @@ class AuthActivity : AppCompatActivity() {
                     override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
                         val wrongCredsSB = Snackbar.make(
                             authLayout,
-                            WRONG_AUTH_DATA_ERROR,
+                            getText(R.string.wrong_auth_data_error).toString(),
                             Snackbar.LENGTH_LONG
                         )
                         val sbView = wrongCredsSB.view
@@ -151,9 +156,8 @@ class AuthActivity : AppCompatActivity() {
                         wrongCredsSB.show()
                     }
                 })
-            runOnUiThread(progressButtonUtil::finishButton)
-        }, PROGRESS_BUTTON_DELAY)
-
+            runOnUiThread(progressButtonHelper::finishButton)
+        }
     }
 
     private fun saveResponseToSharedPref(activity: Activity, response: AuthResponse) {
